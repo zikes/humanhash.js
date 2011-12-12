@@ -1,0 +1,23 @@
+﻿<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>HumanHash.js</title>
+        <script src="../humanhash.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script>
+            $(function(){
+                var $hash = $('#hash'),
+                    $output = $('#output');
+                $('button').on('click', function(){
+                    $output.html(HumanHash.humanize($hash.val()));
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <input id="hash" />
+        <button>Humanize</button>
+        <div id="output"></div>
+    </body>
+</html>
