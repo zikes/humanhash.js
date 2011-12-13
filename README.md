@@ -7,4 +7,4 @@ A Javascript implementation of [humanhash][humanhash], compatible with the brows
 
 [humanhash]: http://github.com/zacharyvoase/humanhash
 [node.js]: http://nodejs.org
-[demo]: http://zikes.github.com/humanhash/examples/browser.htm
+[demo]: http://zikes.github.com/humanhash.js/examples/browser.htm
