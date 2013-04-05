@@ -76,8 +76,12 @@
     HumanHasher.prototype.compress = function(bytes, target){
         // Compress a list of byte values to a fixed target length.
 
-        // If there are less than the target number bytes, the input bytes will be returned
-        if( target >= bytes.length ){
+        // A smaller number of bytes will be zero-padded to a larger number as needed
+        for( var i = target - bytes.length; i > 0; i -= 1 ){
+            bytes.push(0);
+        }
+
+        if( target === bytes.length ){
             return bytes;
         }
 
