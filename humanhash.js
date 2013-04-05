@@ -82,7 +82,7 @@
         }
 
         var bytesLength = bytes.length,
-            seg_size = Math.floor(bytesLength / target),
+            seg_size = bytesLength / target,
             segments = [],
             seg_num = 0;
 
