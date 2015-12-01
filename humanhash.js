@@ -40,7 +40,14 @@
     ];
 
     HumanHasher = function(wordList){
-        this.wordlist = (wordList && (wordList.length === 256)) ? wordList : defaultWordList;
+        if( wordList && (wordList.length === 256) ){
+            // Sort wordlist to allow binary search in the unhash method
+            this.wordlist = wordList.sort(function(a, b){
+                    return a.toLowerCase() > b.toLowerCase();
+                });
+        }else{
+            this.wordlist = defaultWordList;
+        }
         return this;
     };
 
@@ -107,6 +114,57 @@
             return v.toString(16);
         });
         return [this.humanize(digest, numWords, separator), digest];
+    };
+
+    HumanHasher.prototype.dehumanize = function(human, separator){
+
+        // Reverse a human hash to a digest string.
+        // HumanHasher.dehumanize('beer-earth-princess-five')
+        // '1337b347'
+
+        var separator = separator || '-',
+            human = human.split(separator),
+            result = [],
+            found = '';
+
+        for( var i = 0, ii = human.length; i < ii; i += 1 ){
+            found = this.unhash(human[i]);
+            if( found === false ){
+                return false;
+            }
+            result.push(found.toString(16));
+        }
+
+        return result.join('');
+    };
+
+    HumanHasher.prototype.unhash = function(human){
+
+        // Binary search for the index of the human hash word
+        // HumanHasher.unhash('wisconsin')
+        // 248
+
+        var human = human.toLowerCase(),
+            upper = 255,
+            lower = 0,
+            middle = 0,
+            foundHash = '';
+
+        while( upper >= lower ){
+            var middle = lower + Math.floor((upper - lower)/2),
+                foundHash = this.wordlist[middle].toLowerCase();
+            if( foundHash < human ){
+                lower = middle + 1;
+            }else if( foundHash > human ){
+                upper = middle - 1;
+            }else{
+                // word found, return index
+                return middle;
+            }
+        }
+
+        // word not found in the wordlist
+        return false;
     };
 
     global.HumanHasher = HumanHasher;
